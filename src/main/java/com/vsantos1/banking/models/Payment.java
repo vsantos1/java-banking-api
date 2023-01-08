@@ -14,7 +14,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private Integer paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     private String description;
 
@@ -22,6 +23,13 @@ public class Payment {
 
     private Date createdAt;
 
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 
     public Payment() {
     }
@@ -59,15 +67,7 @@ public class Payment {
         this.createdAt = createdAt;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return PaymentStatus.valueOf(paymentStatus);
-    }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        if (paymentStatus != null) {
-            this.paymentStatus = paymentStatus.getCode();
-        }
 
-    }
 }
 

@@ -1,5 +1,7 @@
 package com.vsantos1.banking.vo;
 
+import com.vsantos1.banking.enums.PaymentStatus;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +14,7 @@ public class PaymentVO implements Serializable {
 
     private UUID id;
 
-    private Integer paymentStatus;
+    private PaymentStatus paymentStatus;
 
     private String description;
 
@@ -31,13 +33,6 @@ public class PaymentVO implements Serializable {
         this.id = id;
     }
 
-    public Integer getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(Integer paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
 
     public String getDescription() {
         return description;
@@ -61,5 +56,13 @@ public class PaymentVO implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }
