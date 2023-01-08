@@ -7,6 +7,7 @@ import com.vsantos1.banking.vo.CustomerVO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -50,4 +51,19 @@ public class CustomerService {
         return customers.map(customer -> MapperUtils.parseObject(customer, CustomerVO.class));
 
     }
+
+  public CustomerVO update(Long id,Customer customer){
+        Optional<Customer> customerOptional = customerRepository.findById(id);
+        if(customerOptional.isEmpty()){
+            throw new ResourceNotFoundException("Customer not found");
+        }
+        customerOptional.get().setBalance(customer.getBalance() == null ? customerOptional.get().getBalance() : customer.getBalance());
+        customerOptional.get().setCpf(customer.getCpf() == null ? customerOptional.get().getCpf() : customer.getCpf());
+        customerOptional.get().setEmail(customer.getEmail() == null ? customerOptional.get().getEmail() : customer.getEmail());
+        customerOptional.get().setName(customer.getName() == null ? customerOptional.get().getName() : customer.getName());
+        customerOptional.get().setCardUnlocked(customer.getCardUnlocked() == null ? customerOptional.get().getCardUnlocked() : customer.getCardUnlocked());
+        customerOptional.get().setCardLimit(customer.getCardLimit() == null ? customerOptional.get().getCardLimit() : customer.getCardLimit());
+
+        return MapperUtils.parseObject(customerRepository.save(customerOptional.get()), CustomerVO.class);
+  }
 }

@@ -10,10 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 
@@ -38,5 +35,13 @@ public class CustomerController {
         MapperUtils.copyProperties(customerVO, customer);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(customer));
+    }
+
+    @PutMapping(value = "/customers/{customer_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CustomerVO> updateCustomer(@PathVariable("customer_id") Long id, @RequestBody CustomerVO customerVO) {
+        Customer customer = new Customer();
+        MapperUtils.copyProperties(customerVO, customer);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, customer));
     }
 }
