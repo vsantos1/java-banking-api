@@ -5,6 +5,8 @@ import com.vsantos1.banking.models.Customer;
 import com.vsantos1.banking.repositories.CustomerRepository;
 import com.vsantos1.banking.vo.CustomerVO;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,7 +32,7 @@ public class CustomerService {
     @Transactional
     public CustomerVO save(Customer customer) {
 
-       return MapperUtils.parseObject(customerRepository.save(customer), CustomerVO.class);
+        return MapperUtils.parseObject(customerRepository.save(customer), CustomerVO.class);
     }
 
     public Optional<CustomerVO> findById(Long id) {
@@ -40,5 +42,12 @@ public class CustomerService {
     @Transactional
     public void deleteById(Long id) {
         customerRepository.deleteById(id);
+    }
+
+    public Page<CustomerVO> findAll(Pageable pageable) {
+        Page<Customer> customers = customerRepository.findAll(pageable);
+
+        return customers.map(customer -> MapperUtils.parseObject(customer, CustomerVO.class));
+
     }
 }
