@@ -1,5 +1,7 @@
 package com.vsantos1.banking.services;
 
+import com.vsantos1.banking.enums.PaymentMethod;
+import com.vsantos1.banking.enums.PaymentStatus;
 import com.vsantos1.banking.mapper.MapperUtils;
 import com.vsantos1.banking.models.Payment;
 import com.vsantos1.banking.repositories.PaymentRepository;
@@ -34,10 +36,41 @@ public class PaymentService {
 
         return payments.map(payment -> MapperUtils.parseObject(payment, PaymentVO.class));
     }
+
     @Transactional
-    public PaymentVO save(Payment payment) {
-        /* SAVE AND PARSE THE PAYMENT MODEL TO VALUE OBJECT */
+    public PaymentVO save(Payment payment)  {
+        // TODO : implement the customer to get the customer account information
+        double customerBalance = 1000.0;
+        boolean isCardUnlocked = true;
+        double cardLimit = 1000.0;
+
+        if (payment.getPaymentMethod() == PaymentMethod.CREDIT_CARD) {
+            if (isCardUnlocked && payment.getAmount() <= cardLimit) {
+                payment.setPaymentStatus(PaymentStatus.APPROVED);
+                // TODO: reduce the card limit
+            }
+            payment.setPaymentStatus(PaymentStatus.REJECTED);
+
+            MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
+            throw  new RuntimeException("Insufficient funds");
+
+        }
+
+        if (customerBalance >= payment.getAmount() && payment.getPaymentMethod() != PaymentMethod.BOLETO) {
+            payment.setPaymentStatus(PaymentStatus.APPROVED);
+            return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
+
+        }
+        if (payment.getPaymentMethod() == PaymentMethod.BOLETO) {
+            payment.setPaymentStatus(PaymentStatus.PENDING);
+            return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
+        }
+
+        payment.setPaymentStatus(PaymentStatus.CANCELED);
+
         return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
+
+
     }
 
 
