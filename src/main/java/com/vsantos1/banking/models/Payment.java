@@ -16,9 +16,11 @@ public class Payment {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private PaymentStatus paymentStatus;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "method")
     private PaymentMethod paymentMethod;
 
     private String description;
