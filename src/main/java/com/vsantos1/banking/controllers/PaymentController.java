@@ -58,4 +58,11 @@ public class PaymentController {
 
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.update(id, payment));
     }
+
+    @DeleteMapping(value = "/payments/{payment_id}")
+    public ResponseEntity<?> deletePayment(@PathVariable("payment_id") UUID id) {
+        paymentService.delete(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
