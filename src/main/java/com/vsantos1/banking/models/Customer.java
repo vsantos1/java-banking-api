@@ -25,7 +25,6 @@ public class Customer {
 
     private Boolean isCardUnlocked;
 
-
     public Customer() {
     }
 

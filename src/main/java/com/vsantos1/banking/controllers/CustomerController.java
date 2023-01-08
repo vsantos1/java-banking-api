@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -30,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CustomerVO> createCustomer(CustomerVO customerVO) {
+    public ResponseEntity<CustomerVO> createCustomer(@RequestBody  CustomerVO customerVO) {
         Customer customer = new Customer();
         MapperUtils.copyProperties(customerVO, customer);
 
