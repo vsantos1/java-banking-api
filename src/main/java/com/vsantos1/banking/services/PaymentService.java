@@ -38,7 +38,7 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentVO save(Payment payment)  {
+    public PaymentVO save(Payment payment) {
         // TODO : implement the customer to get the customer account information
         double customerBalance = 1000.0;
         boolean isCardUnlocked = true;
@@ -52,7 +52,7 @@ public class PaymentService {
             payment.setPaymentStatus(PaymentStatus.REJECTED);
 
             MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
-            throw  new RuntimeException("Insufficient funds");
+            throw new RuntimeException("Insufficient funds");
 
         }
 
@@ -73,6 +73,21 @@ public class PaymentService {
 
     }
 
+    public PaymentVO update(UUID id, Payment payment) {
+        Optional<Payment> optionalPayment = paymentRepository.findById(id);
+
+        if (optionalPayment.isEmpty()) {
+            throw new ResourceNotFoundException("No records found for this id");
+        }
+
+        optionalPayment.get().setPaymentStatus(payment.getPaymentStatus() == null ? optionalPayment.get().getPaymentStatus() : payment.getPaymentStatus());
+        optionalPayment.get().setPaymentMethod(payment.getPaymentMethod() == null ? optionalPayment.get().getPaymentMethod() : payment.getPaymentMethod());
+        optionalPayment.get().setAmount(payment.getAmount() == null ? optionalPayment.get().getAmount() : payment.getAmount());
+        optionalPayment.get().setDescription(payment.getDescription() == null ? optionalPayment.get().getDescription() : payment.getDescription());
+
+        return MapperUtils.parseObject(paymentRepository.save(optionalPayment.get()), PaymentVO.class);
+
+    }
 
     public PaymentVO findById(UUID id) {
         /* FIND BY ID AND PARSE THE PAYMENT MODEL TO VALUE OBJECT */
