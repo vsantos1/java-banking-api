@@ -48,11 +48,12 @@ public class PaymentService {
             if (isCardUnlocked && payment.getAmount() <= cardLimit) {
                 payment.setPaymentStatus(PaymentStatus.APPROVED);
                 // TODO: reduce the card limit
+                return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
+
             }
             payment.setPaymentStatus(PaymentStatus.REJECTED);
 
-            MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
-            throw new RuntimeException("Insufficient funds");
+            throw new RuntimeException("Card is locked or the amount is greater than the card limit");
 
         }
 
@@ -66,7 +67,7 @@ public class PaymentService {
             return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
         }
 
-        payment.setPaymentStatus(PaymentStatus.CANCELED);
+        payment.setPaymentStatus(PaymentStatus.REJECTED);
 
         return MapperUtils.parseObject(paymentRepository.save(payment), PaymentVO.class);
 

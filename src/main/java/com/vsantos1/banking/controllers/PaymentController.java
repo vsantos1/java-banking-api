@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -26,6 +27,12 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+
+    @GetMapping(value = "/payments/{payment_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaymentVO> getPayment(@PathVariable("payment_id") UUID id) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.findById(id));
+    }
 
     @GetMapping(value = "/payments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<PaymentVO>> getAllPayments(@PageableDefault(size = 10, direction = Sort.Direction.ASC, value = 10) Pageable pageable) {
@@ -41,5 +48,14 @@ public class PaymentController {
         MapperUtils.copyProperties(paymentVO, payment);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.save(payment));
+    }
+
+    @PutMapping(value = "/payments/{payment_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaymentVO> updatePayment(@PathVariable("payment_id") UUID id, @RequestBody PaymentVO paymentVO) {
+
+        Payment payment = new Payment();
+        MapperUtils.copyProperties(paymentVO, payment);
+
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.update(id, payment));
     }
 }

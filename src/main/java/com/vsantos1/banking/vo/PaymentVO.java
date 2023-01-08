@@ -2,6 +2,8 @@ package com.vsantos1.banking.vo;
 
 import com.vsantos1.banking.enums.PaymentMethod;
 import com.vsantos1.banking.enums.PaymentStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.io.Serial;
 import java.io.Serializable;
