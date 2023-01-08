@@ -1,5 +1,6 @@
 package com.vsantos1.banking.vo;
 
+import com.vsantos1.banking.enums.PaymentMethod;
 import com.vsantos1.banking.enums.PaymentStatus;
 
 import java.io.Serial;
@@ -16,6 +17,7 @@ public class PaymentVO implements Serializable {
 
     private PaymentStatus paymentStatus;
 
+    private PaymentMethod paymentMethod;
     private String description;
 
     private Float amount;

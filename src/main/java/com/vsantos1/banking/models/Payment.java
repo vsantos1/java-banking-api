@@ -1,6 +1,7 @@
 package com.vsantos1.banking.models;
 
 
+import com.vsantos1.banking.enums.PaymentMethod;
 import com.vsantos1.banking.enums.PaymentStatus;
 import jakarta.persistence.*;
 
@@ -16,6 +17,9 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
     private String description;
 
@@ -68,6 +72,12 @@ public class Payment {
     }
 
 
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
 
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 }
 
