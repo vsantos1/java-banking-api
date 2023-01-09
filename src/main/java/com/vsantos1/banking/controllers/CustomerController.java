@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CustomerVO> createCustomer(@RequestBody  CustomerVO customerVO) {
+    public ResponseEntity<CustomerVO> createCustomer(@RequestBody CustomerVO customerVO) {
         Customer customer = new Customer();
         MapperUtils.copyProperties(customerVO, customer);
 
@@ -42,5 +42,12 @@ public class CustomerController {
         MapperUtils.copyProperties(customerVO, customer);
 
         return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, customer));
+    }
+
+    @DeleteMapping(value = "/customers/{customer_id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable("customer_id") Long id) {
+        customerService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
